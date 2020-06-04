@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		
+		<meta charset="ISO-8859-1"></meta>
+		
+		<title>Evento</title>
+		
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		
+		<link 	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
+				rel="stylesheet" id="bootstrap-css">
+		</link>
+
+		<script
+			src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js">
+		</script>
+		
+		<script type="text/javascript" th:src="@{/js/evento.js}"></script>
+
+	</head>
+	
+	<body>
+	
+		<div th:replace="fragments/header :: header"></div>
+		
+		<div class="container">
+			<form th:action="@{/evento/registrar}" method="post" th:object="${evento}">
+				<div class="form-group">
+					
+					<label for="idEvento">ID:</label> 
+					<input type="text" class="form-control" th:field="*{idEvento}"></input>
+					
+					<div class="form-group">
+					
+						<label 	for="dni">DNI:</label> 
+						<input type="text" th:field="*{dniEvento}" class="form-control" id="dni"></input>
+	
+						<div class="alert alert-danger" th:if="${#fields.hasErrors('dniEvento')}" 
+							th:errors="*{dniEvento}">
+						</div>
+						
+						
+						<label 	for="nombrePatrocinador">NOMBRE DEL PATROCINADOR:</label> 
+						<input type="text" th:field="*{nombrePatrocinador}" class="form-control" id="nombrePatrocinador"></input>
+	
+						<div class="alert alert-danger" th:if="${#fields.hasErrors('nombrePatrocinador')}" 
+							th:errors="*{nombrePatrocinador}">
+						</div>
+						
+							
+						<label 	for="nombreEvento">NOMBRE DEL EVENTO:</label> 
+						<input type="text" th:field="*{nombreEvento}" class="form-control" id="nombreEvento"></input>
+	
+						<div class="alert alert-danger" th:if="${#fields.hasErrors('nombreEvento')}" 
+							th:errors="*{nombreEvento}">
+						</div>
+						
+						<label 	for="cantPersonas">CANTIDAD DE PERSONAS:</label> 
+						<input type="text" th:field="*{cantPersonas}" class="form-control" id="cantPersonas"></input>
+	
+						<div class="alert alert-danger" th:if="${#fields.hasErrors('cantPersonas')}" 
+							th:errors="*{cantPersonas}">
+						</div>
+						
+						<label 	for="horaEvento">HORA DEL EVENTO:</label> 
+						<input type="text" th:field="*{horaEvento}" class="form-control" id="horaEvento"></input>
+	
+						<div class="alert alert-danger" th:if="${#fields.hasErrors('horaEvento}" 
+							th:errors="*{horaEvento}">
+						</div>
+						
+						<label 	for="descripcionEvento">DESCRIPCION DEL EVENTO:</label> 
+						<input type="text" th:field="*{descripcionEvento}" class="form-control" id="descripcionEvento"></input>
+	
+						<div class="alert alert-danger" th:if="${#fields.hasErrors('descripcionEvento')}" 
+							th:errors="*{descripcionEvento}">
+						</div>
+						
+						<p:calendar id="fdiaEvento" pattern="dd/MM/yyyy"
+				value="#{eventoController.evneto.diaEvento}"
+				showOn="button" timeZone="UTC" required="true">
+			</p:calendar>
+					</div>
+					
+				</div>
+				
+				<button type="submit" class="btn btn-primary">Aceptar</button>
+				<a href="/evento/listar" class="btn btn-danger">Cancelar</a>
+			</form>
+		</div>
+	
+		<div th:replace="fragments/footer :: footer"></div>
+
+	</body>
+	
+</html>
