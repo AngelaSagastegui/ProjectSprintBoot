@@ -3,64 +3,64 @@ package pe.edu.upc.serviceimpl;
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import pe.edu.upc.model.Evento;
-import pe.edu.upc.repository.IEventoRepository;
+import pe.edu.upc.entity.Evento;
+import pe.edu.upc.repository.EventoRepository;
 import pe.edu.upc.service.IEventoService;
 
+@Service
 public class EventoServiceImpl implements IEventoService {
+
 	@Autowired
-	private IEventoRepository dEvento;
-	
+	private EventoRepository eR;
+
+
 	@Override
 	@Transactional
-	public boolean insertar(Evento evento) {
-		Evento objEvento = dEvento.save(evento);
-		if (objEvento == null)
-			return false;
-		else 
-			return true;
-	}
-	
-	@Override
-	@Transactional
-	public boolean modificar(Evento evento) {
-		boolean flag = false;
-		try {
-			dEvento.save(evento);
-			flag = true;
+	public Integer insertar(Evento evento) {
+		int rpta = 0;
+		if (rpta == 0) {
+			eR.save(evento);
 		}
-		catch(Exception ex) {
-			System.out.println("Sucedio un roche....");
-		}
-		return flag;
+		return rpta;
 	}
 
 	@Override
 	@Transactional
 	public void eliminar(int idEvento) {
-		dEvento.deleteById(idEvento);		
+		eR.deleteById(idEvento);
 	}
 
 	@Override
 	@Transactional
+	public void modificar(Evento evento) {
+		eR.save(evento);
+	}
+
+	@Override
 	public Optional<Evento> listarId(int idEvento) {
-		return dEvento.findById(idEvento);
+		return eR.findById(idEvento);
 	}
 
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<Evento> listar() {
-		return dEvento.findAll();
+		return eR.findAll();
 	}
 
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<Evento> buscarNombre(String nombreEvento) {
-		return dEvento.buscarNombre(nombreEvento);
+		return eR.buscarNombre(nombreEvento);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Evento> buscarPatrocinador( String nombrePatrocinador) {
+		return eR.buscarPatrocinador(nombrePatrocinador);
 	}
 
 

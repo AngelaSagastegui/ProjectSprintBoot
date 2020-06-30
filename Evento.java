@@ -1,4 +1,4 @@
-package pe.edu.upc.model;
+package pe.edu.upc.entity;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -9,52 +9,48 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-@Table(name= "Evento")
+@Table(name = "evento")
 public class Evento implements Serializable {
+
 	private static final long serialVersionUID = 1L;
-	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idEvento;
-	
-	@NotEmpty(message="No puede estar vacio")
-	@NotBlank(message="No puede estar en blanco")
-	@Column(name="dniEvento", length=60, nullable=false)
-	private String dniEvento;
-	
-	
-	@NotEmpty(message="No puede estar vacio")
-	@NotBlank(message="No puede estar en blanco")
-	@Column(name="nombrePatrocinador", length=60, nullable=false)
-	private String nombrePatrocinador;
-	
-	
-	@NotEmpty(message="No puede estar vacio")
-	@NotBlank(message="No puede estar en blanco")
-	@Column(name="nombreEvento", length=60, nullable=false)
+
+	@NotEmpty(message = "Ingresa el nombre del Evento")
+	@Column(name = "nombreEvento", nullable = false, length = 70, unique = true)
 	private String nombreEvento;
-	
-	
-	@NotEmpty(message="No puede estar vacio")
-	@NotBlank(message="No puede estar en blanco")
-	@Column(name="cantPersonas", length=60, nullable=false)
-	private String cantPersonas;
-	
-	/*poner un booleano de poner en que parte se hara el evento fuera o dentro*/
-	@NotEmpty(message="No puede estar vacio")
-	@NotBlank(message="No puede estar en blanco")
-	@Column(name="horaEvento", length=60, nullable=false)
+
+
+	@NotEmpty(message = "Ingresa el nombre del Patrocinador del evento")
+	@Column(name = "nombrePatrocinador", nullable = false, length = 30)
+	private String nombrePatrocinador;
+
+	@Min(0)
+	@Max(1000)
+	@Column(name = "aforoPersonas", nullable = false)
+	private int aforoPersonas;
+
+	@NotEmpty(message="Ingresa la hora del evento")
+	@Column(name="horaEvento", nullable = false, length = 20)
 	private String horaEvento;
 	
-	@NotEmpty(message="No puede estar vacio")
-	@NotBlank(message="No puede estar en blanco")
-	@Column(name="descripcionEvento", length=60, nullable=false)
-	private String descripcionEvento;
-	
+	@NotNull
+	@Future(message="No puedes seleccionar un dia que NO existe")
+	@Temporal(TemporalType.DATE)
+	@Column(name="diaEvento")
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date diaEvento;
 
 	public Evento() {
@@ -62,22 +58,16 @@ public class Evento implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Evento(int idEvento,
-			@NotEmpty(message = "No puede estar vacio") @NotBlank(message = "No puede estar en blanco") String dniEvento,
-			@NotEmpty(message = "No puede estar vacio") @NotBlank(message = "No puede estar en blanco") String nombrePatrocinador,
-			@NotEmpty(message = "No puede estar vacio") @NotBlank(message = "No puede estar en blanco") String nombreEvento,
-			@NotEmpty(message = "No puede estar vacio") @NotBlank(message = "No puede estar en blanco") String cantPersonas,
-			@NotEmpty(message = "No puede estar vacio") @NotBlank(message = "No puede estar en blanco") String horaEvento,
-			@NotEmpty(message = "No puede estar vacio") @NotBlank(message = "No puede estar en blanco") String descripcionEvento,
-			Date diaEvento) {
+	public Evento(int idEvento, @NotEmpty(message = "Ingresa el nombre del Evento") String nombreEvento,
+			@NotEmpty(message = "Ingresa el nombre del Patrocinador del evento") String nombrePatrocinador,
+			@Min(0) @Max(1000) int aforoPersonas, @NotEmpty(message = "Ingresa la hora del evento") String horaEvento,
+			@NotNull @Future(message = "No puedes seleccionar un dia que NO existe") Date diaEvento) {
 		super();
 		this.idEvento = idEvento;
-		this.dniEvento = dniEvento;
-		this.nombrePatrocinador = nombrePatrocinador;
 		this.nombreEvento = nombreEvento;
-		this.cantPersonas = cantPersonas;
+		this.nombrePatrocinador = nombrePatrocinador;
+		this.aforoPersonas = aforoPersonas;
 		this.horaEvento = horaEvento;
-		this.descripcionEvento = descripcionEvento;
 		this.diaEvento = diaEvento;
 	}
 
@@ -89,12 +79,12 @@ public class Evento implements Serializable {
 		this.idEvento = idEvento;
 	}
 
-	public String getDniEvento() {
-		return dniEvento;
+	public String getNombreEvento() {
+		return nombreEvento;
 	}
 
-	public void setDniEvento(String dniEvento) {
-		this.dniEvento = dniEvento;
+	public void setNombreEvento(String nombreEvento) {
+		this.nombreEvento = nombreEvento;
 	}
 
 	public String getNombrePatrocinador() {
@@ -105,20 +95,12 @@ public class Evento implements Serializable {
 		this.nombrePatrocinador = nombrePatrocinador;
 	}
 
-	public String getNombreEvento() {
-		return nombreEvento;
+	public int getAforoPersonas() {
+		return aforoPersonas;
 	}
 
-	public void setNombreEvento(String nombreEvento) {
-		this.nombreEvento = nombreEvento;
-	}
-
-	public String getCantPersonas() {
-		return cantPersonas;
-	}
-
-	public void setCantPersonas(String cantPersonas) {
-		this.cantPersonas = cantPersonas;
+	public void setAforoPersonas(int aforoPersonas) {
+		this.aforoPersonas = aforoPersonas;
 	}
 
 	public String getHoraEvento() {
@@ -129,14 +111,6 @@ public class Evento implements Serializable {
 		this.horaEvento = horaEvento;
 	}
 
-	public String getDescripcionEvento() {
-		return descripcionEvento;
-	}
-
-	public void setDescripcionEvento(String descripcionEvento) {
-		this.descripcionEvento = descripcionEvento;
-	}
-
 	public Date getDiaEvento() {
 		return diaEvento;
 	}
@@ -144,22 +118,7 @@ public class Evento implements Serializable {
 	public void setDiaEvento(Date diaEvento) {
 		this.diaEvento = diaEvento;
 	}
+
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	;
-	
-	
+
 }
